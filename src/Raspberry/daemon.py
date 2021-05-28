@@ -1,4 +1,6 @@
 #!/bin/python
+import RPi.GPIO as GPIO
+
 from imgproc import *
 from picamera.array import PiRGBArray
 from picamera import PiCamera
@@ -7,6 +9,8 @@ import cv2
 
 pic_dir = '/tmp'
 
+GPIO.setmode(GPIO.BOARD);
+GPIO.setup(18, GPIO.IN)
 
 
 def motionDetected():
