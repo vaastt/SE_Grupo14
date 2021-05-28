@@ -9,9 +9,9 @@ import cv2
 
 pic_dir = '/tmp'
 
-GPIO.setmode(GPIO.BOARD);
-GPIO.setup(18, GPIO.IN)
-
+GPIO.setmode(GPIO.BOARD)
+GPIO.setup(26, GPIO.IN)
+GPIO.setup(16, GPIO.IN)
 
 def motionDetected():
     # motion detected
@@ -47,3 +47,8 @@ def saveSeveralPictures(prefix,path):
     for i in range(1,5):
         camera.catpure(path+prefix+str(i)+".jpg")
         time.sleep(0.5)
+
+while True:
+    print( "GPIO26:" + str(GPIO.input(26)) + "\n")
+    print( "GPIO26:" + str(GPIO.input(16)) + "\n")
+    time.sleep(1)
