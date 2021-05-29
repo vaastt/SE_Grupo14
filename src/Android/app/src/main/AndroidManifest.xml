@@ -25,8 +25,17 @@
 
         <activity android:name=".ThirdActivity" />
 
-
+        <service
+            android:name=".MyFirebaseMessageService"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+            android:directBootAware="true"
+        </service>
 
     </application>
+
+
 
 </manifest>
