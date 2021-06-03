@@ -1,0 +1,5 @@
+- sudo pip install firebase-admin
+
+- alterar o pwd da linha 5 no raspberry
+
+- python3 SendPush.py (para enviar uma notification)

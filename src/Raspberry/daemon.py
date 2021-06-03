@@ -1,21 +1,19 @@
-#!/bin/python
-import RPi.GPIO as GPIO
-
-from imgproc import *
-from picamera.array import PiRGBArray
-from picamera import PiCamera
+#!/bin/python3
+import subprocess
+import serial
+import picamera
 import time
-import cv2
+import datetime
+from time import strftime,localtime
+pic_dir = '/home/pi/fotos/'
 
-pic_dir = '/tmp'
-
-GPIO.setmode(GPIO.BOARD)
-GPIO.setup(26, GPIO.IN)
-GPIO.setup(16, GPIO.IN)
-
+def convertToMp4(path_prefix):
+  cmd = ['ffmpeg','-framerate','3','-i', path_prefix+'%d.jpg',path_prefix+'.mp4']
+  retcode = subprocess.call(cmd)
+  if not retcode == 0:
+    raise ValueError('Error {} executing command: {}'.format(retcode, ' '.join(cmd))) 
 def motionDetected():
-    # motion detected
-    a=0
+    saveSeveralPictures(strftime("%H%M%S", localtime()),pic_dir+strftime("%d%m%Y", localtime()))
     
 
 def buttonDetected():
@@ -28,27 +26,53 @@ def sendPushNotif(msg):
     a=0
 
 def saveCameraPicture(name,path):
-    # asdsa
-    camera = PiCamera()
-    rawCapture = PiRGBArray(camera)
-    time.sleep(0.2)
-    # grab an image from the camera
-    camera.capture(rawCapture, format="bgr")
-    image = rawCapture.array
+    with picamera.PiCamera() as camera:
+      rawCapture = PiRGBArray(camera)
+      time.sleep(0.2)
+      # grab an image from the camera
+      camera.capture(rawCapture, format="bgr")
+      image = rawCapture.array
 
 
 def saveSeveralPictures(prefix,path):
     # save several pictures from the camera
-    camera = PiCamera()
-    camera.resolution = (640, 480)
-    camera.framerate = 32
-    rawCapture = PiRGBArray(camera, size=(640, 480))
-    # capture frames from the camera
-    for i in range(1,5):
-        camera.catpure(path+prefix+str(i)+".jpg")
-        time.sleep(0.5)
+    with picamera.PiCamera() as camera:
+      camera.resolution = (640, 480)
+      camera.framerate = 32
+      # capture frames from the camera
+      camera.start_preview()
+      time.sleep(2)
+      camera.capture_sequence([
+        path+prefix+str(1)+".jpg",
+        path+prefix+str(2)+".jpg",
+        path+prefix+str(3)+".jpg",
+        path+prefix+str(4)+".jpg",
+        path+prefix+str(5)+".jpg"
+      ])
+      camera.stop_preview()
+      convertToMp4(path+prefix)
 
+
+ser = serial.Serial("/dev/ttyACM0", 9600, timeout=1)
+try:
+  ser.open()
+except serial.serialutil.SerialException:
+  ser.close()
+  ser.open()
 while True:
-    print( "GPIO26:" + str(GPIO.input(26)) + "\n")
-    print( "GPIO26:" + str(GPIO.input(16)) + "\n")
-    time.sleep(1)
+    try:
+      motion_detected=0
+      while 1:
+        response = ser.readline()
+        if "MOTION" in response:
+          print response
+          motion_detected=motion_detected+1
+          if motion_detected>=3:
+            motionDetected()
+            motion_detected=0
+        elif "BUTTON" in response:
+          print response
+          buttonDetected()
+    except KeyboardInterrupt:
+      ser.close()
+      time.sleep(1)
