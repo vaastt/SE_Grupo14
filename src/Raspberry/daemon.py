@@ -1,39 +1,42 @@
 #!/bin/python3
+import FCMManager as fcm
 import subprocess
 import serial
 import picamera
 import time
 import datetime
 from time import strftime,localtime
-pic_dir = '/home/pi/fotos/'
 
+## default vars
+pic_dir = '/home/pi/fotos/'
+tokens = ["cZO8o2tVQb2zKC-s6SkA-7:APA91bFESs1bKXS83W0knZITfq82gDNENk23LOJLF0PXhsdnknTBZHhJzUVYbjyOrtKd18eY96Wrg24Da2dYsjrB2kepoUb6pqSo4_Qs0VVKcc12mulfc6Obg_GQfKbkkN6iedRr66Li"]
+##
+
+## this function converts varius jpg files into a simple mp4 video. The default framerate is 3 which makes a video of +-1.6 seconds
+## it takes path_prefix as parameter and it's for the jpg location. the output is the same path+prefix but in mp4 format
 def convertToMp4(path_prefix):
   cmd = ['ffmpeg','-framerate','3','-i', path_prefix+'%d.jpg',path_prefix+'.mp4']
   retcode = subprocess.call(cmd)
   if not retcode == 0:
     raise ValueError('Error {} executing command: {}'.format(retcode, ' '.join(cmd))) 
+
+
+## function that handles motion detection using PIR of arduino
 def motionDetected():
-    saveSeveralPictures(strftime("%H%M%S", localtime()),pic_dir+strftime("%d%m%Y", localtime()))
+  sendPushNotif("Ring! Alguém está à sua porta!")
+  saveSeveralPictures(strftime("%H%M%S", localtime()),pic_dir+strftime("%d%m%Y", localtime()))
     
-
+## function that handles button of our ring bell.
 def buttonDetected():
-    # button detected
-    a=0
+  sendPushNotif("Ring! Alguém tocou na campaínha!")
+  saveSeveralPictures(strftime("%H%M%S", localtime()),pic_dir+strftime("%d%m%Y", localtime()))
 
-
+## function that takes msg as argument and send the push-up notification via firebase.
 def sendPushNotif(msg):
-    # send notif to firebase
-    a=0
+  fcm.sendPush("Camera na Campainha", msg, tokens)
 
-def saveCameraPicture(name,path):
-    with picamera.PiCamera() as camera:
-      rawCapture = PiRGBArray(camera)
-      time.sleep(0.2)
-      # grab an image from the camera
-      camera.capture(rawCapture, format="bgr")
-      image = rawCapture.array
-
-
+## this function takes prefix (files prefix) and path (path-to-save files) as parameter. It takes 5 photos in sequence at a framerate of 32FPS.
+## this will later call a convert to mp4 function in order to process the jpg and make the video reable by the phone application
 def saveSeveralPictures(prefix,path):
     # save several pictures from the camera
     with picamera.PiCamera() as camera:
@@ -53,6 +56,8 @@ def saveSeveralPictures(prefix,path):
       convertToMp4(path+prefix)
 
 
+
+### MAIN PROGRAM
 ser = serial.Serial("/dev/ttyACM0", 9600, timeout=1)
 try:
   ser.open()
