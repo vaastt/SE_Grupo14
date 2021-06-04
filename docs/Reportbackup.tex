@@ -17,6 +17,7 @@
 \vspace{2mm}
 \hspace{0.5cm} O presente relatório tem como objetivo a exposição do desenvolvimento projeto \textbf{Câmara na campainha}, elaborado no âmbito da unidade curricular de Sistemas Embutidos. Este projeto consiste no desenvolvimento de uma campainha inteligente, através da instalação de uma câmara de infravermelhos na porta da residência, um botão que simulará a campainha, e um sensor de movimento cuja função será detetar a presença de pessoas na entrada da casa/apartamento. Após ser detetada alguma atividade na entrada do domicílio, ou ao ser pressionado o botão, a câmara será ativada, gravando e emitindo imagens a tempo real para o \textit{smartphone} do dono da propriedade. Além do utilizador poder realizar um pedido de uma \textit{livestream} após receber notificação de atividade na sua entrada, este também tem a possibilidade de visualizar e apagar todos os vídeos \textit{stop-motion} captadas pela câmara.
 
+\iffalse
 \section{Requisitos}
 \vspace{2mm}
 \hspace{0.5cm} Nesta secção, estão enumerados os requisitos funcionais e não-funcionais essenciais para o correto funcionamento do projeto.
@@ -43,12 +44,25 @@
     \item O pedido de stream de vídeo do smartphone do utilizador deverá ter um atraso inferior a 10 segundos.
     \item A presença física de uma pessoa pelo sensor de movimento terá de ser detetada a uma distância mínima de 50 centímetros.
 \end{itemize}
+\fi
 
-\newpage
+% \newpage
 \section{Desenvolvimento}
 \subsection{Arduino}
 \subsection{Raspberry Pi}
 \subsection{Android}
+
+O desenvolvimento da aplicação Android foi realizado em Java. Esta aplicação tem de ser capaz de receber uma \textit{stream} de vídeo, reproduzi-la e também tem que receber uma lista com os vídeos \textit{stop-motion} gravados pela câmera, possibilitando a sua visualização. Para isto foi usada a aplicação \texttt{ExoPlayer} que permite a reprodução de vídeo e áudio no Android, de forma simplificada.
+
+A aplicação consiste em três \textit{views}, onde cada \textit{view} tem uma tarefa específica. Quando a aplicacão e iniciada, á apresentado ao utilizador a \textit{view} inicial, na qual existe a opção de escolher entre ver uma \textit{stream} da câmara ou ver a lista de vídeos disponiveis para reprodução. Se o utilizador optar por ver os vídeos, após carregar no botão, este é direcionado para uma \textit{view} que consiste num \textit{recycler view}. Este recycler view é composto por um \textit{Linear Layout} que contém uma \textit{textbox} e dois botões. Após receber a lista de vídeos, esta será apresentada nesta \textit{view}, onde cada vídeo ocupará uma \textit{row} que será "reciclada" para cada vídeo. O utilizador tem depois a opção de ver o vídeo ou eliminá-lo, sendo que se o quiser visualizar, será direcionado para a terceira \textit{view}.
+
+A terceira \textit{view} é onde a media vai ser reproduzida, consiste apenas num \textit{ExoPlayer}.
+
+
+\subsection{Push Notifications - Firebase Cloud Messaging}
+No projeto Android Studio, relativo à nossa aplicação, foram instaladas as dependências do FCM e foi criado um método para a geração de tokens. Estes tokens, são distintos para cada dispositivo Android, e têm como finalidade ser o identificador único para cada um deles. Desta forma, sempre que for detetado movimento pelo sensor ou acionado o botão representativo da campainha, o Raspberry Pi envia um pedido para o Firebase através de um script. Finalmente, o Firebase recebe, os diferentes tokens - título e mensagem da notificação (payload) - e encaminha esse pedido para todos os telemóveis associados a esses tokens.
+
+
 
 \newpage
 \section{Diagrama de estados}
