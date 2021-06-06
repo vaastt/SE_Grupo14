@@ -10,6 +10,7 @@ from time import strftime,localtime
 
 ## default vars
 pic_dir = '/home/pi/fotos/'
+
 #evan: "cZO8o2tVQb2zKC-s6SkA-7:APA91bFESs1bKXS83W0knZITfq82gDNENk23LOJLF0PXhsdnknTBZHhJzUVYbjyOrtKd18eY96Wrg24Da2dYsjrB2kepoUb6pqSo4_Qs0VVKcc12mulfc6Obg_GQfKbkkN6iedRr66Li"
 tokens = ["dc_vyVWQQ2OcYWDXa7qblV:APA91bHcRzsiRkf3LsmJOc10Za6W5nCooHwCCbAYRzW7N7aH4VqZ1rItNlqQO2X94S4Lf66LqNX8EmJ8IAvN-3R-xtLrUZJKIqSKQL2IkmVtG8xbY4ZeSGb7e3E_pnwYLHNHZPvMP4u8"]
 ##
@@ -25,10 +26,10 @@ def convertToMp4(path_prefix):
 
 
 def appendFile(file_path):
-  file1 = open("files.txt", "a")  # append mode
+  file1 = open(pic_dir+"/files.txt", "a")  # append mode
   file1.write(file_path+".mp4\n")
   file1.close()
-  sendFileToAWS("files.txt")
+  sendFileToAWS(pic_dir+"/files.txt")
 
 ## this function sends a file to the root of AWS web server.
 def sendFileToAWS(fullpathfile):
