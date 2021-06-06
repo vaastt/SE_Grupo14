@@ -1,8 +1,9 @@
 #define LEDPIN 13
 #define SENSORPIN 2
 #define BUTTONPIN 3
-#define PI_MOTIONPIN 8
-#define PI_BUTTONPIN 12
+//#include <SoftwareSerial.h>
+
+//SoftwareSerial piSer(7,8);
 int sensorState = 0, buttonState = 0;
 
 void setup() {
@@ -13,10 +14,9 @@ void setup() {
 
   pinMode(BUTTONPIN, INPUT);
 
-  pinMode(PI_MOTIONPIN, OUTPUT);
-  pinMode(PI_BUTTONPIN, OUTPUT);
+
   Serial.begin(9600);
-  
+  //piSer.begin(9600);
 }
 
 void loop() {
@@ -31,40 +31,38 @@ void loop() {
   if(sensorState != HIGH)
     verify_button();
 
+
 }
 
 void verify_sensor() {
-  
   if(sensorState == HIGH) {   
     
     digitalWrite(LEDPIN, HIGH);
-    digitalWrite(PI_MOTIONPIN, HIGH);
-    Serial.println("DETECTED");
 
-    
+    Serial.println("MOTION_DETECTED");
+    //piSer.println("MD");
+    delay(1000);
     
   } else {
 
     digitalWrite(LEDPIN, LOW);
-    digitalWrite(PI_MOTIONPIN, LOW);
-    //Serial.println("NOT DETECTED");
+
+    //Serial.println("MOTION_NOT_DETECTED");
   
   }
   
 }
 
 void verify_button() {
-  
   if (buttonState == HIGH) {
     
     digitalWrite(LEDPIN, HIGH);
-    digitalWrite(PI_BUTTONPIN, HIGH);
-    Serial.println("BUTTON PRESSED");
-    
+
+    Serial.println("BUTTON_PRESSED");
+    //piSer.println("BP");
+    delay(1000);
   } else {
-  
     digitalWrite(LEDPIN, LOW);
-    digitalWrite(PI_BUTTONPIN, LOW);
   }
   
 }
