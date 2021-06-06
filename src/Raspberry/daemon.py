@@ -12,7 +12,8 @@ from time import strftime,localtime
 pic_dir = '/home/pi/fotos/'
 
 #evan: "cZO8o2tVQb2zKC-s6SkA-7:APA91bFESs1bKXS83W0knZITfq82gDNENk23LOJLF0PXhsdnknTBZHhJzUVYbjyOrtKd18eY96Wrg24Da2dYsjrB2kepoUb6pqSo4_Qs0VVKcc12mulfc6Obg_GQfKbkkN6iedRr66Li"
-tokens = ["dc_vyVWQQ2OcYWDXa7qblV:APA91bHcRzsiRkf3LsmJOc10Za6W5nCooHwCCbAYRzW7N7aH4VqZ1rItNlqQO2X94S4Lf66LqNX8EmJ8IAvN-3R-xtLrUZJKIqSKQL2IkmVtG8xbY4ZeSGb7e3E_pnwYLHNHZPvMP4u8"]
+tokens = ["cZO8o2tVQb2zKC-s6SkA-7:APA91bFESs1bKXS83W0knZITfq82gDNENk23LOJLF0PXhsdnknTBZHhJzUVYbjyOrtKd18eY96Wrg24Da2dYsjrB2kepoUb6pqSo4_Qs0VVKcc12mulfc6Obg_GQfKbkkN6iedRr66Li",
+"dc_vyVWQQ2OcYWDXa7qblV:APA91bHcRzsiRkf3LsmJOc10Za6W5nCooHwCCbAYRzW7N7aH4VqZ1rItNlqQO2X94S4Lf66LqNX8EmJ8IAvN-3R-xtLrUZJKIqSKQL2IkmVtG8xbY4ZeSGb7e3E_pnwYLHNHZPvMP4u8"]
 ##
 
 ## this function converts varius jpg files into a simple mp4 video. The default framerate is 3 which makes a video of +-1.6 seconds
