@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 
+import com.google.android.exoplayer2.SimpleExoPlayer;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.messaging.FirebaseMessaging;
@@ -28,7 +29,7 @@ public class MainActivity extends AppCompatActivity {
         goToActivityTwo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                changeActivitySecond("https://media.geeksforgeeks.org/wp-content/uploads/20201217163353/Screenrecorder-2020-12-17-16-32-03-350.mp4");
+                changeActivitySecond("http://34.252.199.165:9000/03062021220905.mp4");
             }
         });
 
@@ -43,12 +44,14 @@ public class MainActivity extends AppCompatActivity {
         getToken();
     }
 
+
     private void changeActivitySecond(String video) {
         Intent intent = new Intent(this, SecondActivity.class);
         String videoURL = video;
         intent.putExtra("sentVideoURL", videoURL);
         startActivity(intent);
     }
+
 
     private void changeActivityThird() {
         Intent intent = new Intent(this, ThirdActivity.class);

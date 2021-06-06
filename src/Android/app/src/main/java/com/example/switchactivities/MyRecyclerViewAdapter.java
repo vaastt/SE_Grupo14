@@ -41,7 +41,7 @@ public class MyRecyclerViewAdapter extends RecyclerView.Adapter<MyRecyclerViewAd
             System.out.println("Hello number " + viewHolder.getLayoutPosition());
             System.out.println("texto = " + viewByIdText.getText().toString());
             Intent intent = new Intent(context, SecondActivity.class);
-            String videoURL = viewByIdText.getText().toString();
+            String videoURL = "http://34.252.199.165:9000/" + viewByIdText.getText().toString();
             intent.putExtra("sentVideoURL", videoURL);
             context.startActivity(intent);
         });

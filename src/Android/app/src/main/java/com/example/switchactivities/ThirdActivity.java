@@ -37,8 +37,10 @@ public class ThirdActivity extends AppCompatActivity implements MyRecyclerViewAd
             protected List<String> doInBackground(Void ... voids) {
 
                 try {
-                    URL url = new URL("https://www.dcc.fc.up.pt/~michel/passwd");
-                    BufferedReader in = new BufferedReader(new InputStreamReader(url.openStream()));
+                    //URL url = new URL("http://34.252.199.165:9000/files.txt");
+                    URL url2 = new URL("http://34.252.199.165:9000/files.txt");
+
+                    BufferedReader in = new BufferedReader(new InputStreamReader(url2.openStream()));
                     String str;
                     while ((str = in.readLine()) != null) {
                         names.add(str);
@@ -76,7 +78,6 @@ public class ThirdActivity extends AppCompatActivity implements MyRecyclerViewAd
        /* buttonWatchVideo = findViewById(R.id.activity_watch_video);
         RecyclerView recyclerView = findViewById(R.id.rvAnimals);
         buttonWatchVideo = recyclerView.findViewById(R.id.activity_watch_video);
-
         System.out.println("era uma vez um butao " +         buttonWatchVideo.getId());
 */
           /*buttonWatchVideo.setOnClickListener(new View.OnClickListener() {
@@ -97,12 +98,10 @@ public class ThirdActivity extends AppCompatActivity implements MyRecyclerViewAd
         recyclerView.setAdapter(adapter);
     }
 
-
     @Override
     public void onItemClick(View view, int position) {
         Toast.makeText(this, "You clicked " + adapter.getItem(position) + " on row number " + position, Toast.LENGTH_SHORT).show();
     }
-
 
     private void changeActivitySecond(String video) {
         Intent intent = new Intent(this, SecondActivity.class);
@@ -113,7 +112,3 @@ public class ThirdActivity extends AppCompatActivity implements MyRecyclerViewAd
 
 
 }
-
-
-
-
