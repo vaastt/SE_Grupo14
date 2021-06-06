@@ -23,6 +23,13 @@ def convertToMp4(path_prefix):
     raise ValueError('Error {} executing command: {}'.format(retcode, ' '.join(cmd)))
   sendFileToAWS(path_prefix+".mp4")
 
+
+def appendFile(file_path):
+  file1 = open("files.txt", "a")  # append mode
+  file1.write(file_path+".mp4\n")
+  file1.close()
+  sendFileToAWS("files.txt")
+
 ## this function sends a file to the root of AWS web server.
 def sendFileToAWS(fullpathfile):
   cmd = ["scp","-i","/home/pi/.ssh/awsse",fullpathfile,"ec2-user@34.252.199.165:/home/ec2-user/se/"]
@@ -63,6 +70,7 @@ def saveSeveralPictures(prefix,path):
       ])
       camera.stop_preview()
       convertToMp4(path+prefix)
+      appendFile(path.split('/')[-1]+prefix)
 
 
 
